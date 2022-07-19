@@ -1,0 +1,160 @@
+# My scalars
+scalar MongoFilter
+scalar MongoProjection
+scalar MongoSort
+
+type Contact {
+  _id: ID!
+  cryptocurrency_account: String!
+  full_name: String!
+}
+
+input DocumentInput {
+  cryptocurrency_account: String!
+  full_name: String!
+}
+
+input MongoInput {
+  dataApikey: String!
+  dataSource: String!
+  collection: String!
+  database: String!
+  document: DocumentInput
+}
+
+type Query {
+  getContacts(
+    dataApikey: String!
+    dataSource: String!
+    collection: String!
+    database: String!
+    filter: JSON!
+    projection: MongoProjection
+    sort: MongoSort
+    limit: Int
+    skip: Int
+  ): JSON
+    # Directiva
+    @rest(
+      endpoint: "https://data.mongodb-api.com/app/data-fyput/endpoint/data/v1/action/find" # para obtener todos
+      method: POST
+      configuration: "contact_config"
+      headers: [{ name: "api-key", value: "$dataApikey" }]
+      # resultroot: "document" # para obtener uno
+      resultroot: "documents" # para obtener varios
+    )
+
+  getContact(
+    dataApikey: String!
+    dataSource: String!
+    collection: String!
+    database: String!
+    filter: MongoFilter
+    projection: MongoProjection
+    sort: MongoSort
+    limit: Int
+    skip: Int
+  ): JSON
+    # Directiva
+    @rest(
+      endpoint: "https://data.mongodb-api.com/app/data-fyput/endpoint/data/v1/action/findOne" # para obtener uno
+      method: POST
+      configuration: "contact_config"
+      headers: [{ name: "api-key", value: "$dataApikey" }]
+      resultroot: "document" # para obtener uno
+    )
+
+  createContact(
+    dataApikey: String!
+    dataSource: String!
+    collection: String!
+    database: String!
+    document: JSON!
+  ): JSON
+    # Directiva
+    @rest(
+      endpoint: "https://data.mongodb-api.com/app/data-fyput/endpoint/data/v1/action/insertOne"
+      method: POST
+      configuration: "contact_config"
+      headers: [{ name: "api-key", value: "$dataApikey" }]
+      resultroot: "document" # para obtener uno
+    )
+
+  updateContact(
+    dataApikey: String!
+    dataSource: String!
+    collection: String!
+    database: String!
+    filter: JSON!
+    update: JSON!
+  ): JSON
+    # Directiva
+    @rest(
+      endpoint: "https://data.mongodb-api.com/app/data-fyput/endpoint/data/v1/action/updateOne"
+      method: POST
+      configuration: "contact_config"
+      headers: [{ name: "api-key", value: "$dataApikey" }]
+      resultroot: "document" # para obtener uno
+    )
+
+  deleteContact(
+    dataApikey: String!
+    dataSource: String!
+    collection: String!
+    database: String!
+    filter: JSON!
+  ): JSON
+    # Directiva
+    @rest(
+      endpoint: "https://data.mongodb-api.com/app/data-fyput/endpoint/data/v1/action/deleteOne"
+      method: POST
+      configuration: "contact_config"
+      headers: [{ name: "api-key", value: "$dataApikey" }]
+      resultroot: "document" # para obtener uno
+    )
+}
+
+type Mutation {
+  createContact(
+    dataApikey: String!
+    dataSource: String!
+    collection: String!
+    database: String!
+    document: JSON!
+  ): JSON!
+    @rest(
+      endpoint: "https://data.mongodb-api.com/app/data-fyput/endpoint/data/v1/action/insertOne"
+      method: POST
+      configuration: "contact_config"
+      headers: [{ name: "api-key", value: "$dataApikey" }]
+    )
+
+  updateContact(
+    dataApikey: String!
+    dataSource: String!
+    collection: String!
+    database: String!
+    filter: JSON!
+    update: JSON!
+  ): JSON!
+    @rest(
+      endpoint: "https://data.mongodb-api.com/app/data-fyput/endpoint/data/v1/action/updateOne"
+      method: POST
+      configuration: "contact_config"
+      headers: [{ name: "api-key", value: "$dataApikey" }]
+    )
+
+  deleteContact(
+    dataApikey: String!
+    dataSource: String!
+    collection: String!
+    database: String!
+    filter: JSON!
+  ): JSON!
+    @rest(
+      endpoint: "https://data.mongodb-api.com/app/data-fyput/endpoint/data/v1/action/deleteOne"
+      method: POST
+      configuration: "contact_config"
+      headers: [{ name: "api-key", value: "$dataApikey" }]
+    )
+}
