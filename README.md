@@ -2,6 +2,10 @@
 
 A brief description of what this project does and who it's for
 
+Challenge: 
+- Apply Stepzen 
+- Metamask Login
+
 ## App Web
 
 The web application is based on react js using vite as processor. The steps to run the server are:
